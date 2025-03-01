@@ -1,0 +1,14 @@
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.item{
+    font-size: 2rem;
+}
+
+.item_number{
+    color: rgb(237, 18, 18);
+}
