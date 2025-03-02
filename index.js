@@ -76,15 +76,9 @@ function testFramework(testResult) {
 }
 
 function orderedList(objArr) {
-  const arr = [];
-  for (let index = 0; index < objArr.length; index++) {
-    arr[index] = JSON.stringify(objArr[index]);
-  }
-
+  const arr = objArr.map ((e)=> `script: ${e.script}; result: ${e.result}`)
   const items = arr.map(function (e) {
-        let res = (e = `<li class="item ${
-          e.endsWith(`"passed"}`) ? "item_passed" : "item_failed"
-        }">${e}</li>`);
+        let res = (e = `<li class="item ${ e.endsWith(`passed`) ? "item_passed" : "item_failed"}">${e}</li>`);
         return res;
       });
 const result = items.join('');
