@@ -69,14 +69,13 @@ function createTestResult(script, expectedJSON, actualJSON, result) {
   return {script, expectedJSON, actualJSON, result};
 }
 
-
 function testFramework(testResult) {
   const bodyElement = document.querySelector('body');
   bodyElement.innerHTML = orderedList(test(testResult));
 }
 
 function orderedList(objArr) {
-  const arr = objArr.map ((e)=> `script: ${e.script}; result: ${e.result}`)
+  const arr = objArr.map ((e)=> `script: ${e.script}; expected: ${e.expectedJSON}; result: ${e.result}`)
   const items = arr.map(function (e) {
         let res = (e = `<li class="item ${ e.endsWith(`passed`) ? "item_passed" : "item_failed"}">${e}</li>`);
         return res;
