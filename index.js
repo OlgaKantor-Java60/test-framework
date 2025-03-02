@@ -1,6 +1,6 @@
 function myReduce(array, callback, initialValue) {
   let index = initialValue == undefined ? 1 : 0;
-  let acc = initialValue ?? array[0]; // now '0' = 'true'
+  let acc = initialValue ?? array[0]; 
   for (; index < array.length; index++) {
     acc = callback(acc, array[index], index, array);
   }
@@ -16,23 +16,20 @@ function minMaxValue(array) {
   return res;
 }
 
-let arr1 = [155, 2000, 0, -10, 1];
-let arr2 = [1, -10, 0, 2000, 155];
-let arr3 = ["kukareku", "TelRan", "str", "60", "JavaScript"];
-let arr4 = ["JavaScript", "60", "str", "TelRan", "kukareku"];
-
 const scripts = [
-  `minMaxValue(${arr1})`,
-  `minMaxValue(${arr2})`,
-  `minMaxValue(${arr3})`,
-  `minMaxValue(${arr4})`
+  `minMaxValue([155, 2000, 0, -10, 1])`,
+  `minMaxValue([1, -10, 0, 2000, 155])`,
+  `minMaxValue(["kukareku", "TelRan", "str", "60", "JavaScript"])`,
+  `minMaxValue(["JavaScript", "60", "str", "TelRan", "kukareku"])`,
+  `minMaxValue(["JavaScript", "str", "TelRan", "kukareku"])`,
 ]
 
 const expectedResults = [
-  `[-10, 2000]`,
-  `[-10, 2000]`,
-  `["60", "kukareku"]`,
-  `["60", "kukareku"]`
+  [-10,2000],
+  [-10,2000],
+  ["60","str"],
+  ["60","str"],
+  ["60","str"],
 ]
 
 const createTestObjArr = (arr1, arr2) => {
@@ -44,23 +41,10 @@ const createTestObjArr = (arr1, arr2) => {
   return res;
 }
 
-let objArr = createTestObjArr(scripts, expectedResults);
-console.log(objArr);
-
-
+const objArr = createTestObjArr(scripts, expectedResults);
 
 function test(testObjArr){
-  // testObj structure {
-  //      script: <string containing script text>, expected: <any type>
-  //      }
-  // returns resultObject with structure {
-  //      script: <string containing script text>, 
-  //      expected JSON: <JSON string, containing expected result>, 
-  //      actual JSON: <JSON string containing actual result>,
-  //      result: <string containing either 'passed' or 'failed'>
-  //      }
   const testResult = [];
-  
   for (let i = 0; i < testObjArr.length; i++) {
     const expectedJSON = JSON.stringify(testObjArr[i].expected);
     let evalRes;
@@ -81,34 +65,30 @@ function test(testObjArr){
   return testResult;
 }
 
-console.log(test(objArr));
-
-
 function createTestResult(script, expectedJSON, actualJSON, result) {
   return {script, expectedJSON, actualJSON, result};
 }
 
+
 function testFramework(testResult) {
-  //TODO
-  //input
-  //scripts - array of tested scripts 
-  //expected result - array of appropriate results
-  //scripts[i] and expectedResults[i] should be consistent
-  //************** */
-  //output
   const bodyElement = document.querySelector('body');
-  bodyElement.innerHTML = orderedList(test(testObj));
-  // bodyElement.innerHTML = <orderedList of test results with coloring legend: passed by green, failed by red>
-  // after list summery including number of passed/failed tests (same coloring)
-  //presenting list items on the browser
+  bodyElement.innerHTML = orderedList(test(testResult));
 }
 
-function orderedList(obj) {
-  // const jsonObj = JSON.stringify.obj;
-  // .map(function (e) {
-  // let res =  e = `<li class="item ${typeof e == "number" ? "item_number" : "" }">${e}</li>`;
-  //   return res;
-  // });
-  // const result = arr2.join(" ");
-  // return `<ol>${result}</ol>`;
+function orderedList(objArr) {
+  const arr = [];
+  for (let index = 0; index < objArr.length; index++) {
+    arr[index] = JSON.stringify(objArr[index]);
+  }
+
+  const items = arr.map(function (e) {
+        let res = (e = `<li class="item ${
+          e.endsWith(`"passed"}`) ? "item_passed" : "item_failed"
+        }">${e}</li>`);
+        return res;
+      });
+const result = items.join('');
+return `<ol>${result}</ol>`;
 }
+
+testFramework(objArr);
