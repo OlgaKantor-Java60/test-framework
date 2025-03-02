@@ -17,10 +17,39 @@ function minMaxValue(array) {
 }
 
 let arr1 = [155, 2000, 0, -10, 1];
-let arr2 = ["kukareku", "TelRan", "str", "60", "JavaScript"];
+let arr2 = [1, -10, 0, 2000, 155];
+let arr3 = ["kukareku", "TelRan", "str", "60", "JavaScript"];
+let arr4 = ["JavaScript", "60", "str", "TelRan", "kukareku"];
 
-console.log(test({script: 'minMaxValue(["hello", "kuku", "abc"])', expected: ["abc", "kuku"]}));
-console.log(test({script: 'minMaxValue([155, 2000, 0, -10, 1])', expected: [-10, 2000]}));
+
+test({script: 'minMaxValue(["hello", "kuku", "abc"])', expected: ["abc", "kuku"]});
+test({script: 'minMaxValue([155, 2000, 0, -10, 1])', expected: [-10, 2000]});
+
+const scripts = [
+  `minMaxValue(${arr1})`,
+  `minMaxValue(${arr2})`,
+  `minMaxValue(${arr3})`,
+  `minMaxValue(${arr4})`
+]
+
+const expectedResults = [
+  `[-10, 2000]`,
+  `[-10, 2000]`,
+  `["60", "kukareku"]`,
+  `["60", "kukareku"]`
+]
+
+const createTestObjArr = (arr1, arr2) => {
+  const arr3 = arr1.concat(arr2);
+  let res = [];
+  for (let i = 0; i < arr3.length/2; i++) {
+    res[i] = {script: arr3[i], expected: arr3[arr3.length/2+i]}
+  }
+  return res;
+}
+
+let obj = createTestObjArr(scripts, expectedResults);
+
 
 function test(testObj){
   // testObj structure {
@@ -32,7 +61,9 @@ function test(testObj){
   //      actual JSON: <JSON string containing actual result>,
   //      result: <string containing either 'passed' or 'failed'>
   //      }
-  const expectedJSON = JSON.stringify(testObj.expected);
+
+  
+ const expectedJSON = JSON.stringify(testObj.expected);
   let evalRes;
   try {
       evalRes = eval(testObj.script);
@@ -58,7 +89,18 @@ function testFramework(scripts, expectedResults) {
   //************** */
   //output
   const bodyElement = document.querySelector('body');
+  bodyElement.innerHTML = orderedList(test(testObj));
   // bodyElement.innerHTML = <orderedList of test results with coloring legend: passed by green, failed by red>
   // after list summery including number of passed/failed tests (same coloring)
   //presenting list items on the browser
+}
+
+function orderedList(obj) {
+  // const jsonObj = JSON.stringify.obj;
+  // .map(function (e) {
+  // let res =  e = `<li class="item ${typeof e == "number" ? "item_number" : "" }">${e}</li>`;
+  //   return res;
+  // });
+  // const result = arr2.join(" ");
+  // return `<ol>${result}</ol>`;
 }

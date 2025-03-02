@@ -9,6 +9,10 @@ body{
     font-size: 2rem;
 }
 
-.item_number{
+.item_passed{
+    color: rgb(0, 124, 17);
+}
+
+.item_failed{
     color: rgb(237, 18, 18);
 }
