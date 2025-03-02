@@ -1,5 +1,6 @@
 body{
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
@@ -15,4 +16,8 @@ body{
 
 .item_failed{
     color: rgb(237, 18, 18);
+}
+
+.result{
+    font-size: 2rem;
 }

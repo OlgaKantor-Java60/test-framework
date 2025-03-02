@@ -74,14 +74,26 @@ function testFramework(testResult) {
   bodyElement.innerHTML = orderedList(test(testResult));
 }
 
+function countsResult(testResult){
+  const result = [0, 0]
+  testResult.forEach(element => {
+    if (element.result == 'passed') result[0]++;
+    else result[1]++;
+  });
+  return result;
+}
+
 function orderedList(objArr) {
   const arr = objArr.map ((e)=> `script: ${e.script}; expected: ${e.expectedJSON}; result: ${e.result}`)
+  const count = countsResult(objArr);
   const items = arr.map(function (e) {
         let res = (e = `<li class="item ${ e.endsWith(`passed`) ? "item_passed" : "item_failed"}">${e}</li>`);
         return res;
       });
 const result = items.join('');
-return `<ol>${result}</ol>`;
+return `<ol>${result}</ol>
+<div class = "result item_passed">Passed: ${count[0]}</div>
+<div class = "result item_failed">Failed: ${count[1]}</div>`
 }
 
 testFramework(objArr);
