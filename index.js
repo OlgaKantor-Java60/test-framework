@@ -21,10 +21,6 @@ let arr2 = [1, -10, 0, 2000, 155];
 let arr3 = ["kukareku", "TelRan", "str", "60", "JavaScript"];
 let arr4 = ["JavaScript", "60", "str", "TelRan", "kukareku"];
 
-
-test({script: 'minMaxValue(["hello", "kuku", "abc"])', expected: ["abc", "kuku"]});
-test({script: 'minMaxValue([155, 2000, 0, -10, 1])', expected: [-10, 2000]});
-
 const scripts = [
   `minMaxValue(${arr1})`,
   `minMaxValue(${arr2})`,
@@ -48,10 +44,12 @@ const createTestObjArr = (arr1, arr2) => {
   return res;
 }
 
-let obj = createTestObjArr(scripts, expectedResults);
+let objArr = createTestObjArr(scripts, expectedResults);
+console.log(objArr);
 
 
-function test(testObj){
+
+function test(testObjArr){
   // testObj structure {
   //      script: <string containing script text>, expected: <any type>
   //      }
@@ -61,26 +59,36 @@ function test(testObj){
   //      actual JSON: <JSON string containing actual result>,
   //      result: <string containing either 'passed' or 'failed'>
   //      }
-
+  const testResult = [];
   
- const expectedJSON = JSON.stringify(testObj.expected);
-  let evalRes;
-  try {
-      evalRes = eval(testObj.script);
-  } catch (error) {
+  for (let i = 0; i < testObjArr.length; i++) {
+    const expectedJSON = JSON.stringify(testObjArr[i].expected);
+    let evalRes;
+    try {
+      evalRes = eval(testObjArr[i].script);
+    } catch (error) {
       evalRes = error;
+    }
+    const actualJSON = JSON.stringify(evalRes);
+    const result = expectedJSON === actualJSON ? "passed" : "failed";
+    testResult[i] = createTestResult(
+      testObjArr[i].script,
+      expectedJSON,
+      actualJSON,
+      result
+    );
   }
-  const actualJSON = JSON.stringify(evalRes);
-  const result = expectedJSON === actualJSON ? 'passed' : 'failed';
-  const testResult = createTestResult(testObj.script, expectedJSON, actualJSON, result);
   return testResult;
 }
+
+console.log(test(objArr));
+
 
 function createTestResult(script, expectedJSON, actualJSON, result) {
   return {script, expectedJSON, actualJSON, result};
 }
 
-function testFramework(scripts, expectedResults) {
+function testFramework(testResult) {
   //TODO
   //input
   //scripts - array of tested scripts 
